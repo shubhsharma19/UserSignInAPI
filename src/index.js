@@ -7,6 +7,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
+const { z } = require("zod");
 const jwtPass = "12345";
 
 const app = express();
@@ -31,9 +32,7 @@ const usersSchema = new mongoose.Schema({
 // model based on the schema
 const Users = mongoose.model("users", usersSchema);
 
-// validationSchemas.js
-const { z } = require("zod");
-
+// zod schema
 const schema = z.object({
   body: z.object({
     username: z.string(),
