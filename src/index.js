@@ -12,7 +12,7 @@ const jwtPass = "12345";
 
 const app = express();
 const PORT = 3000;
-mongoose.connect("mongodb+srv://admin:admin123@cluster0.lhwf1g5.mongodb.net/user_app");
+mongoose.connect("URL");
 
 // schema for input validation
 const loginInputSchema = z.object({
