@@ -1,4 +1,4 @@
-# Express JWT Authentication API
+# Express JWT Authentication based Login/SignUp API
 
 This is an Express API that provides **JWT-based authentication**. It includes user login and user listing routes.
 
