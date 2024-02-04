@@ -98,8 +98,6 @@ app.get("/users", (req, res) => {
     // verification of user
     const decoded = jwt.verify(token, jwtPass);
     const username = decoded.username;
-
-    // return list of users other than this user
     return res.status(200).json({
       msg: "Welcome back " + req.body.username + "!",
     });
