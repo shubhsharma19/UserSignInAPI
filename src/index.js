@@ -7,48 +7,36 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
-const { z } = require('zod');
+const { validateUserInput } = require("./validationSchemas");
 const jwtPass = "12345";
 
 const app = express();
 const PORT = 3000;
-mongoose.connect("URL");
 
-// schema for input validation
-const loginInputSchema = z.object({
-  body: z.object({
-    username: z.string().min(8),
-    email: z.string().endsWith('@gmail.com') || 
-    z.string().endsWith('.com'),
-    password: z.string().min(8),
-  }),
-});
+mongoose.connect("URL")
+.then(() => {
+  console.log("Connected to MongoDB");
+})
+.catch(() => {
+  console.log("Could not connect to MongoDB");
+})
 
-// mongoose schema
-const User = mongoose.model('users', {
- username: String,
- email: String, 
- password: String 
-});
+// schema
+const usersSchema = new mongoose.Schema({
+  username: String,
+  email: String,
+  password: String,
+})
 
-// middleware for input validation
-const validateUserInput = (schema) => (req, res, next) => {
-  try {
-    schema.parse({ body: req.body });
-    next();
-  } catch (err) {
-    return res.status(400).json({
-      error: err
-    });
-  }
-}
+// model based on the schema
+mongoose.model("users", usersSchema)
 
 app.use(express.json(), validateUserInput(loginInputSchema));
 
 // function to find if the user exists
 async function userexists (email) {
-  const existUser = await db.users.findOne({ email: email });
-  return existUser;
+  const user = await User.findOne({ email: email });
+  return user;
 }
 
 app.post('/signup', (req, res) => {
