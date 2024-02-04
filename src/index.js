@@ -4,17 +4,18 @@
 // task 4 = make signin possible with token ✅
 // task 5 = if user doesnt exist return error ✅
 // task 6 = if user exists return list of users in db
-const express = require("express");
-const jwt = require("jsonwebtoken");
-const mongoose = require("mongoose");
-const { z } = require("zod");
-const jwtPass = "12345";
+import express from "express";
+import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
+import { z } from "zod";
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 const app = express();
 const PORT = 3000;
 
 mongoose
-  .connect("mongodb+srv://admin:admin123@cluster0.lhwf1g5.mongodb.net/users_app")
+  .connect(process.env.URI)
   .then(() => {
     console.log("Connected to MongoDB");
   })
@@ -97,7 +98,7 @@ app.get("/users", (req, res) => {
   try {
     // verification of user
     const decoded = jwt.verify(token, jwtPass);
-    const username = decoded.username;
+    const username = decoded.email;
     return res.status(200).json({
       msg: "Welcome back " + req.body.username + "!",
     });
