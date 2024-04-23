@@ -118,18 +118,24 @@ app.use((err, req, res, next) => {
 
 // function to find if the user exists
 async function userExists(email) {
-  const user = await Users.findOne({ email: email});
+  const user = await Users.findOne({ email });
   return user !== null;
 }
 
 function createUser(username, email, password) {
   const user = new Users({
-    username: username,
-    email: email,
-    password: password,
+    username,
+    email,
+    password,
   });
   // save the user
-  user.save().then(() => console.log("Added User!"));
+  try {
+    await user.save();
+    console.log("Added User!");
+  } catch (err) {
+    console.error("Error saving user:", err);
+  }
+}
 }
 
 app.listen(PORT, () => {
